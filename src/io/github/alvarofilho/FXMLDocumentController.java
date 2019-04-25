@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -16,13 +18,7 @@ import javafx.scene.control.TextField;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private Label labelPeso;
-
-    @FXML
     private TextField textPeso;
-
-    @FXML
-    private Label labelAltura;
 
     @FXML
     private TextField textAltura;
@@ -35,6 +31,26 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void calcularEvento(ActionEvent event) {
+        getIMC();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        textAltura.setOnKeyPressed((KeyEvent keyEvent) -> {
+            KeyCode key = keyEvent.getCode();
+            if (key == KeyCode.ENTER) {
+                getIMC();
+            }
+        });
+        textPeso.setOnKeyPressed((KeyEvent keyEvent) -> {
+            KeyCode key = keyEvent.getCode();
+            if (key == KeyCode.ENTER) {
+                getIMC();
+            }
+        });
+    }
+
+    private void getIMC() {
         try {
             double altura = Double.parseDouble(textAltura.getText().replace(",", "."));
             double peso = Double.parseDouble(textPeso.getText().replace(",", "."));
@@ -47,11 +63,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    public String getSituation(double imc) {
+    private String getSituation(double imc) {
         if (imc < 18.5) {
             return "Abaixo do Peso!";
         } else if (imc >= 18.5 && imc < 24.9) {
